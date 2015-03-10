@@ -1,0 +1,25 @@
+#include <math.h>
+class Solution {
+public:
+    double pow(double x, int n) {
+        if(x==0) return 0;
+        if(x==1) return 1;
+        if(x==-1)
+            n = n&1;
+        double base = x;
+        if(n<0){
+            base = 1/x;
+            n = -n;
+        } 
+        double r = 1;
+        int h = log(n)/log(2);
+        for(int hh = h;hh>=0;--hh){
+            int i = hh>0?n/(2<<(hh-1)):n;
+            if((i&1)==0)
+                r = r*r;
+            else
+                r = r*r*base;
+        }
+        return r;
+    }
+};
