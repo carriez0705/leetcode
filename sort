@@ -1,0 +1,197 @@
+#include<vector>
+#include<string>
+#include<iostream>
+#include"stdlib.h"
+
+using namespace std;
+
+//insertion sort
+void insertionsort(vector<int> &vec){
+	for(int i = 1; i<vec.size();i++){
+		int j = i-1;
+		int pivot = vec[i];
+		while(j>=0 && vec[j]>pivot)
+			j--;
+		for(int k = i-1; k>j; k--)
+			vec[k+1] = vec[k];
+		vec[j+1] = pivot;
+	}
+}
+
+//randomized quicksort 1
+void partition(vector<int> &vec,int p, int q){
+	if(p>=q) return;
+	int n = q-p+1;
+	int r = rand()%n;
+	swap(vec[p+r],vec[q]);
+	int pivot = vec[q];
+	int i = p-1;
+	int j = p;
+	for(;j<q;j++){
+		if(vec[j]<pivot){
+			i += 1;
+			swap(vec[i],vec[j]);
+		}
+	}
+	swap(vec[i+1],vec[q]);
+	partition(vec, p, i);
+	partition(vec, i+2,q);
+}
+void rndquicksort(vector<int> &vec){
+	partition(vec,0,vec.size()-1);
+}
+
+//quicksort 2 for nonunique sequence
+void partition2(vector<int> &vec, int p, int q){
+	if(p<q){
+		int n = q-p+1;
+		int rnd = p+rand()%n;
+		swap(vec[rnd], vec[p]);
+		int pivot = vec[p];
+		int i = p;
+		int j = q;
+		while(i<j){
+			while(i<j && vec[j]>=pivot)
+				j--;
+			//vec[i++] =vec[j];
+			vec[i] = vec[j];
+			while(i<j && vec[i]<=pivot)
+				i++;
+			//vec[j--] = vec[i];
+			vec[j] = vec[i];
+		}
+		vec[i] = pivot;
+		partition2(vec, p, i-1);
+		partition2(vec, i+1, q);
+	}
+}
+void quicksort(vector<int> &vec){
+	partition2(vec,0,vec.size()-1);
+}
+
+//quicksort3 classic
+void partition3(vector<int> &vec, int p, int q){
+	if(p<q){
+		int rnd = p+rand()%(q-p+1);
+		int pivot = vec[rnd];
+		int i = p;
+		int j = q;
+		while(i<=j){
+			while(i<j && vec[i]<=pivot)
+				i++;
+			while(i<j && vec[j]>=pivot)
+				j--;
+			if(i<=j){
+				swap(vec[i],vec[j]);
+				i++;
+				j--;
+			}			
+		}
+		partition3(vec,p,j);
+		partition3(vec,i,q);
+	}
+}
+void qsort(vector<int> &vec){
+	partition3(vec,0,vec.size()-1);
+}
+//merge sort
+void merge(vector<int> &vec, int p, int mid, int q){
+	int n = q-mid;
+	vector<int> backvec(0);
+	for(int i = 0; i<n; i++)
+		backvec.push_back(vec[mid+1+i]);
+	int i = mid;
+	int j = n-1;
+	int k = q;
+	while(i>=p&&j>=0){
+		if(vec[i]>=backvec[j])
+			vec[k--]=vec[i--];
+		else
+			vec[k--]=backvec[j--];
+	}
+	while(j>=0)
+		vec[k--]=backvec[j--];
+}
+void mergesort(vector<int> &vec, int p, int q){
+	if(p==q) return;
+	int mid = (p+q)>>1;
+	mergesort(vec, p, mid);
+	mergesort(vec, mid+1, q);
+	merge(vec, p, mid, q);
+}
+
+//heapsort
+int left(int p, int q){
+	int l = p>>1+1;
+	return l>q?0:l;
+}
+int right(int p, int q){
+	int r = p>>1+2;
+	return r>q?0:r;
+}
+void maxheapify(vector<int> &vec, int p, int q){
+	int maxind = p;
+	int l = left(p,q);
+	int r = right(p,q);
+	if(l!=0&&vec[p]<vec[l])
+		maxind = l;
+	if(r!=0&&vec[maxind]<vec[r])
+		maxind = r;
+	if(maxind==p) return;
+	swap(vec[maxind],vec[p]);
+	maxheapify(vec,maxind,q);
+
+}
+void buildmaxheap(vector<int> &vec){
+	int n = vec.size()-1;
+	for(int i = n/2; i>=0; i--){
+		maxheapify(vec,i,n);
+	}
+}
+
+void heapsort_help(vector<int> &vec, int q){
+	if(q==0) return;
+	swap(vec[0],vec[q]);
+	q -= 1;
+	maxheapify(vec,0,q);
+	heapsort_help(vec,q);
+}
+void heapsort(vector<int> &vec){
+	buildmaxheap(vec);
+	heapsort_help(vec,vec.size()-1);
+}
+
+//counting sort
+vector<int> countingsort(vector<int> &vec, int range){
+	vector<int> c(range,0);
+	for(int i = 0; i<vec.size();i++){
+		c[vec[i]] += 1;
+	}
+	for(int i = 1; i<c.size();i++)
+		c[i] += c[i-1];
+	vector<int> b(vec.size(),0);
+	for(int i = vec.size()-1;i>=0;i--){
+		b[c[vec[i]]-1] = vec[i];
+		c[vec[i]] -= 1;
+	}
+	return b;
+}
+//radix sort
+int main_search(){
+	int n = 6;
+	int num[] = {5,3,6,9,9,7};
+	vector<int> vec(0);
+	for(int i = 0; i<n; i++){
+		vec.push_back(num[i]);
+	}
+	quicksort(vec);
+	//insertionsort(vec);
+	//rndquicksort(vec);
+	//mergesort(vec,0,vec.size()-1);
+	//vector<int> b = countingsort(vec,10);
+	for(int i = 0; i<vec.size(); i++)
+		cout<<vec[i];
+	getchar();
+	getchar();
+	return 0;
+}
