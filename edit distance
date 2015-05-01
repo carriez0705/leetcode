@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        if(word1.empty()||word2.empty())
+            return max(word1.length(),word2.length());
+        vector<int> c(word2.length()+1);
+        int diagnal = 0;
+        for(int i = 0; i<word1.length(); i++){
+            for(int j = 0; j<word2.length(); j++){
+                int old = c[j+1];
+                if(i==0){
+                    if(word1[i]!=word2[j]) c[j+1]=c[j]-1;
+                    else c[j+1] = c[j];
+                }
+                else if(j==0){
+                    if(word1[i]!=word2[j]) c[j+1] -= 1;
+                }
+                else{
+                    int d = 0;
+                    if(word1[i]==word2[j]) d = diagnal;
+                    else d = diagnal -1;
+                    int maxc = 0;
+                    maxc = d>(c[j]-1)?d:(c[j]-1);
+                    maxc = maxc>(c[j+1]-1)?maxc:(c[j+1]-1);
+                    c[j+1] = maxc;
+                }
+                diagnal = old;
+            }
+        }
+        return abs(c[word2.length()]);
+    }
+};
