@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int toint(string s){
+    int toint(const string &s){
         bool neg = false;
         int m = 0;
         int i = 0;
