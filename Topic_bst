@@ -1,0 +1,139 @@
+//Binary Search Tree Topic
+struct Node{
+	int val;
+	Node *p;
+	Node *left;
+	Node *right;
+};
+void dosth(Node *&node){
+	return;
+}
+void preorder(Node *node){
+	if(node){
+		dosth(node);
+		preorder(node->left);
+		preorder(node->right);
+	}
+}
+
+void preorder2(){
+
+}
+
+void inorder(Node *&previous,Node *node){
+	if(node){
+		inorder(previous,node->left);
+		dosth(node);
+		previous = node;
+		inorder(previous, node);
+	}
+}
+
+void inorder2(){
+
+}
+void sucorder(Node *node){
+	if(node){
+		sucorder(node->left);
+		sucorder(node->right);
+		dosth(node);
+	}
+}
+
+void sucorder2(){
+
+}
+
+Node* find_mimimal(Node *root){
+	while(root->left){
+		root = root->left;
+	}
+	return root;
+}
+Node* find_maximal(Node *root){
+	while(root->right){
+		root = root->right;
+	}
+	return root;
+}
+Node* Tree_PREDECESSOR(Node *root, Node *k){
+	if(k->left)
+		return find_maximal(k);
+	Node *y = k->p;
+	while(y && y->left==k){
+		k = y;
+		y = y->p;
+	}
+	return y;
+}
+Node* Tree_SUCCESSOR(Node *root, Node *k){
+	if(k->right)
+		return find_mimimal();
+	Node *y = k->p;
+	while(y && y->right == k){
+		k = y;
+		y = y->p;
+	}
+	return y;
+}
+Node* Tree_SEARCH(Node *root, int val){
+	while(root && root->val!=val){
+		if(val<root->val)
+			root = root->left;
+		else
+			root = root->right;
+	}
+	return root;
+}
+Node* Tree_INSERT(Node *root, int val){
+	Node *r = root;
+	Node *y = root;
+	while(root){
+		y = root;
+		if(val<root->val)
+			root = root->left;
+		else
+			root = root->right;
+	}
+	if(!y){
+		Node node = {val, NULL, NULL,NULL};
+		r = &node;
+	}
+	else{
+		Node node = {val, NULL, NULL, y};
+		if(val<y->val){
+			y->left = &node;
+		}
+		else{
+			y->right = &node;
+		}
+	}
+	return r;
+}
+
+Node* Tree_DELETE(Node *root, Node *d){
+	Node *x = root;
+	Node *y = NULL;
+	//find the node to be deleted
+	if(!d->left || !d->right)
+		y = d;
+	else
+		y = Tree_SUCCESSOR(root,d);
+	//new child
+	x = y->left ? y->left : y->right ;
+	if(x) x->p = y->p;
+	//delete
+	if(!y->p)
+		root = x;
+	else{
+		if(y = y->p->left)
+			y->p->left = x;
+		else
+			y->p->right = x;
+	}
+	//check
+	if(y!=d)
+		d->val = y->val;
+	return root;
+
+}
