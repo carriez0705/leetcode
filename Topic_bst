@@ -1,3 +1,6 @@
+#include <stack>
+#include<hash_map>
+using namespace std;
 //Binary Search Tree Topic
 struct Node{
 	int val;
@@ -16,7 +19,16 @@ void preorder(Node *node){
 	}
 }
 
-void preorder2(){
+void preorder_nonrecursive(Node *root){
+	stack<Node *> nodstack;
+	if(root) nodstack.push(root);
+	while(!nodstack.empty()){
+		Node *node = nodstack.top();
+		dosth(node);
+		nodstack.pop();
+		if(node->right) nodstack.push(node->right);
+		if(node->left) nodstack.push(node->left);
+	}
 
 }
 
@@ -29,10 +41,33 @@ void inorder(Node *&previous,Node *node){
 	}
 }
 
-void inorder2(){
-
+void inorder_nonrecursive(Node *root){
+	stack<Node *> nodstack;
+	hash_map<Node*, int> color;
+	if(root){
+		nodstack.push(root);
+		color[root] = 0;
+	}
+	while(!nodstack.empty()){
+		Node *node = nodstack.top();
+		if(!color[node]){
+			if(node->left){
+				nodstack.push(node->left);
+				color[node->left] = 0; 
+			}
+			color[node] = 1;
+		}
+		else{
+			dosth(node);
+			nodstack.pop();
+			if(node->right){
+				nodstack.push(node->right);
+				color[node->right] = 1;
+			}
+		}
+	}
 }
-void sucorder(Node *node){
+void postorder(Node *node){
 	if(node){
 		sucorder(node->left);
 		sucorder(node->right);
@@ -40,8 +75,33 @@ void sucorder(Node *node){
 	}
 }
 
-void sucorder2(){
-
+void postorder_nonrecursive(Node *root){
+	//0 for white, 1 for black
+	hash_map<Node*, int> color;
+	stack<Node*> nodstack;
+	if(root){ 
+		nodstack.push(root);
+		color[root] = 0;
+	}
+	while(!nodstack.empty()){
+		Node *node = nodstack.top();
+		if(!color[node]){
+			//first left, then right
+			if(node->left){
+				nodstack.push(node->left);
+				color[node->left] = 0;
+			}
+			if(node->right){ 
+				nodstack.push(node->right);
+				color[node->right] = 0;
+			}
+			color[node] = 1;
+		}
+		else{
+			dosth(node);
+			nodstack.pop();
+		}
+	}
 }
 
 Node* find_mimimal(Node *root){
@@ -68,7 +128,7 @@ Node* Tree_PREDECESSOR(Node *root, Node *k){
 }
 Node* Tree_SUCCESSOR(Node *root, Node *k){
 	if(k->right)
-		return find_mimimal();
+		return find_mimimal(k);
 	Node *y = k->p;
 	while(y && y->right == k){
 		k = y;
