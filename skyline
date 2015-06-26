@@ -12,7 +12,7 @@ class pointHeap{
         return (i*2+1);
     }
     int rightc(int i){
-        return (i*1+2);
+        return (i*2+2);
     }
     int parent(int i){
         return (i-1)/2;
@@ -38,9 +38,9 @@ public:
     }
     void max_heapify(int i){
         int maxh = i;
-        if(leftc(i)<heap_size-1 && pheap[leftc(i)]>pheap[i])
+        if(leftc(i)<heap_size && pheap[leftc(i)]>pheap[i])
             maxh = leftc(i);
-        if(rightc(i)<heap_size-1 && pheap[rightc(i)]>pheap[maxh])
+        if(rightc(i)<heap_size && pheap[rightc(i)]>pheap[maxh])
             maxh = rightc(i);
         if(maxh!=i){
             swap(pheap[maxh], pheap[i]);
