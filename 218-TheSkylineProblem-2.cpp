@@ -11,6 +11,8 @@ public:
         while(i<vec1.size() && j<vec2.size()){
             if(vec1[i].first == vec2[j].first){
                 addpoint(vec1[i].first, max(vec1[i].second, vec2[j].second), result);
+                left = vec1[i].second;
+                right = vec2[j].second;
                 i += 1;
                 j += 1;
             }
@@ -21,7 +23,7 @@ public:
             }
             else{
                 right = vec2[j].second;
-                addpoint(vec1[i].first, max(left, right), result);
+                addpoint(vec2[j].first, max(left, right), result);
                 j += 1;
             }
         }
@@ -35,11 +37,11 @@ public:
         }
         vec1 = result;
     }
-    void subline(vector<vector<int,int> > &buildings, int left, int right,  vector<pair<int, int> > &inner){
+    void subline(vector<vector<int> > &buildings, int left, int right,  vector<pair<int, int> > &inner){
         if(left>right) return;
         if(left==right){
-            inner.push_back(buildings[left][0], buildings[left][2]);
-            inner.push_back(buildings[left][1], 0);
+            addpoint(buildings[left][0], buildings[left][2], inner);
+            addpoint(buildings[left][1], 0, inner);
         }
         else{
             int mid = (left+right)>>1;
