@@ -53,7 +53,7 @@ public:
                     maxarea = max(maxarea, (right[i][j]-left[i][j]+1)*height[i][j]);
                 }
                 else{
-                    rr = i-1;
+                    rr = j-1;
                 }
             }
         }
