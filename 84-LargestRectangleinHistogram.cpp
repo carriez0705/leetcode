@@ -3,9 +3,10 @@ public:
     int largestRectangleArea(vector<int>& height) {
         int maxarea = 0;
         stack<int> pos;
-        vector<int> left, right;
+        vector<int> left(height.size());
+        vector<int> right(height.size());
         for(int i = 0; i<height.size(); i++){
-            while(!pos.empty() && height[pos.top()]>height[i]){
+            while(!pos.empty() && height[pos.top()]>=height[i]){
                 pos.pop();
             }
             if(pos.empty()) left[i] = 0;
@@ -14,7 +15,7 @@ public:
         }
         while(!pos.empty()) pos.pop();
         for(int i = height.size()-1; i>=0; i--){
-            while(!pos.empty() && height[pos.top()]>height[i]){
+            while(!pos.empty() && height[pos.top()]>=height[i]){
                 pos.pop();
             }
             if(pos.empty()) right[i] = height.size()-1;
