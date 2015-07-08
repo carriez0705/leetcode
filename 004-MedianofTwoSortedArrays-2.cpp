@@ -10,13 +10,14 @@ public:
             return vec2[left2+k-1];
         if(k==1)
             return min(vec1[left1], vec2[left2]);
-        int mid = (left1+right1)>>1;
-        int t = k-(m+1)>>1;
+        int t1 = min((m+1)/2, k/2);
+        int mid = left1+t1-1;
+        int t = k-t1;
         int mid2 = left2+t-1;
         if(vec1[mid]==vec2[mid2])
             return vec1[mid];
         else if(vec1[mid]<vec2[mid2])
-            return findkth(vec1, mid+1, right1, vec2, left1, mid2, k-(mid-left1+1));
+            return findkth(vec1, mid+1, right1, vec2, left2, mid2, k-t1);
         else
             return findkth(vec1, left1, mid, vec2, mid2+1, right2, k-t);
         
