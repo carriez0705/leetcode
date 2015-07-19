@@ -18,6 +18,7 @@ public:
         if(!numerator || !denominator) return "0";
         bool neg = true; //consider negtive situation
         if((numerator>0&&denominator>0) || (numerator<0&&denominator<0)) neg = false;
+        //if((numerator ^ denominator) >0) neg = false;
         long long num = abs((long long)numerator); //be careful about INT_MIN
         long long denom = abs((long long)denominator);
         long long a = 0, b = 0;
