@@ -1,7 +1,7 @@
 bool compare(string s1, string s2){
         s1.append(s2);
         s2.append(s1);
-        return s1.compare(s2)>=0;
+        return s1.compare(s2)>0; //strict weak ordering
     }
 class Solution {
 public:
