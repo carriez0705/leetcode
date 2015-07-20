@@ -26,8 +26,14 @@ public:
             i++;
             j++;
         }
-        if(i<v1.size() && v1[i]!=0) return 1;
-        if(j<v2.size() && v2[j]!=0) return -1;
+        while(i<v1.size()){
+            if(v1[i]>0) return 1;
+            i++;
+        }
+        while(j<v2.size()){
+            if(v2[j]>0) return -1;
+            j++;
+        }
         return 0;
     }
 };
