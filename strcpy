@@ -1,0 +1,23 @@
+char* strcpy(char *src, char *dst, int n){
+    int diff = dst-src;
+    bool left2right = true;
+    if(diff>=0){
+	left2right = false;
+	src += n;
+	dst += n;
+    }
+    int count = 0;
+    while(count<n){
+	*dst = *src;
+	count += 1;
+	if(left2right){
+	    src += 1;
+	    dst += 1;
+	}
+	else{
+	    src -= 1;
+	    dst -= 1;
+	}
+    }
+    return left2right?dst-n:dst+1;
+}
