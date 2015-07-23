@@ -3,8 +3,8 @@ char* strcpy(char *src, char *dst, int n){
     bool left2right = true;
     if(diff>=0){
 	left2right = false;
-	src += n;
-	dst += n;
+	src += n-1;
+	dst += n-1;
     }
     int count = 0;
     while(count<n){
