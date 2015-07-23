@@ -1,11 +1,13 @@
 int findkth(int k){
-    set<int> kset;
-    kset.insert(1);
-    while(kset.size()<k){
-	int b = kset.begin();
-	kset.insert(b*2);
-	if(kset.size()==k) break;
-	kset.inset(b*5);
-    }
-    return kset.rbegin();
+	set<int> kset;
+	kset.insert(1);
+	while (k>1){
+		int b = *kset.begin();
+		kset.insert(b * 2);
+		kset.erase(b);
+		k--;
+		if (k == 1) break;
+		kset.insert(b * 5);
+	}
+	return *kset.begin();
 }
