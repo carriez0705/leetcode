@@ -11,3 +11,24 @@ int findkth(int k){
 	}
 	return *kset.begin();
 }
+
+int findkth_2(int k){
+    vector<int> vec;
+    vec.push_back(1);
+    int i = 0,j = 0;
+    while(vec.size()<k){
+	int v2 = vec[i]*2;
+	int v5 = vec[j]*5;
+	if(v2>v5){
+	    if(v2!=vec[vec.size()-1])
+		vec.push_back(v2);
+	    i++;
+	}
+	else{
+	    if(v5!=vec[vec.size()-1])
+		vec.push_back(v5);
+	    j++;
+	}
+    }
+    return vec[k-1];
+}
