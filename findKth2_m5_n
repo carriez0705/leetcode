@@ -19,7 +19,7 @@ int findkth_2(int k){
     while(vec.size()<k){
 	int v2 = vec[i]*2;
 	int v5 = vec[j]*5;
-	if(v2>v5){
+	if(v2<v5){
 	    if(v2!=vec[vec.size()-1])
 		vec.push_back(v2);
 	    i++;
