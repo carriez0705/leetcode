@@ -1,20 +1,16 @@
 class Solution {
 public:
-    unsigned int convert(string &s, int begin){
-        unsigned int ret = 0;
-        int i = 0;
-        while(i<10){
-            char c = s[begin+i];
-            switch(c){
+    void convert(string &s, int n, unsigned int &ret){
+        char c = s[n];
+        switch(c){
                 case 'A': ret = (ret<<2)|0; break;
                 case 'C': ret = (ret<<2)|1; break;
                 case 'G': ret = (ret<<2)|2; break;
                 case 'T': ret = (ret<<2)|3; break;
             }
-            i += 1;
+        ret = ret&0xFFFFF;
         }
-        return ret;
-    }
+
     string toString(const unsigned int &num){
         string str;
         int i = 0;
@@ -37,12 +33,17 @@ public:
         unordered_map<unsigned int, bool> smap;
         vector<string> ret;
         if(s.size()<=10) return ret;
-        for(int i = 0; i<=s.size()-10; i++){
-            unsigned int r = convert(s, i);
-            if(smap.find(r)==smap.end())
-                smap[r] = false;
+        unsigned int uint = 0;
+        for(int i = 0; i<10; i++){
+            convert(s,i,uint);
+        }
+        smap[uint] = false;
+        for(int i = 1; i<=s.size()-10; i++){
+            convert(s, i+9, uint);
+            if(smap.find(uint)==smap.end())
+                smap[uint] = false;
             else
-                smap[r] = true;
+                smap[uint] = true;
         }
         for(auto iter = smap.begin(); iter!= smap.end(); iter++){
             if(iter->second)
