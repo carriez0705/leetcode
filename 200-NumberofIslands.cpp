@@ -17,6 +17,7 @@ public:
         int n = grid.size();
         if(!n) return 0;
         int m = grid[0].size();
+        //vector<vector<bool> > is slower than this version, don't know why
         vector<vector<char> > color(n, vector<char>(m,0));//0: uncultivated; 1:cultivated
         int count = 0;
         for(int i = 0; i<n; i++)
