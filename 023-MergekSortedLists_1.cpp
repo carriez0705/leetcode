@@ -1,4 +1,5 @@
 //data structure- heap
+//O(nlgk)
 /**
  * Definition for singly-linked list.
  * struct ListNode {
