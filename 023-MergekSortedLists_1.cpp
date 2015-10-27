@@ -7,13 +7,8 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-struct comNode{
-	ListNode *node;
-	int id;
-	comNode(ListNode* n, int index):node(n), id(index){}
-};
-bool comp(comNode *com1, comNode *com2){
-	return com1->node->val > com2->node->val;
+bool comp(ListNode *com1, ListNode *com2){
+	return com1->val > com2->val;
     }
 class Solution {
     
@@ -23,13 +18,11 @@ public:
 	ListNode *head = NULL;
 	if(!n)  return head;
 	if(n==1 ) return lists[0];
-	vector<comNode*> comheap;
+	vector<ListNode*> comheap;
 	int count = n;
         for(int i= 0; i< n; i++){
 		if(lists[i]){
-			comNode* com = new comNode(lists[i], i);
-			comheap.push_back(com);
-			lists[i] = lists[i]->next;
+			comheap.push_back(lists[i]);
 		}
 		else
 			count--;
@@ -37,31 +30,27 @@ public:
 	if(!count) return head;
 	make_heap(comheap.begin(), comheap.end(), comp);
 	ListNode *pre = NULL;
-        int concatenate = -1;
+        ListNode *concatenate = NULL;
 	while(comheap.size()){
-		comNode *min_ = comheap.front();
+		ListNode *min_ = comheap.front();
 		pop_heap(comheap.begin(), comheap.end(), comp);
 		comheap.pop_back();
-		if(!pre) head = min_->node;
-		else pre->next = min_->node;
-		pre = min_->node;
-		int index = min_->id;
+		if(!pre) head = min_;
+		else pre->next = min_;
+		pre = min_;
 		if(count>1){
-		    if(lists[index]){
-			comNode *com = new comNode(lists[index], index);
-			comheap.push_back(com);
-			lists[index] = lists[index]->next;
+		    if(min_->next){
+			comheap.push_back(min_->next);
 			push_heap(comheap.begin(), comheap.end(), comp);
 		    }
 		    else
 			count--;
 		}
 		else if (count==1){
-			concatenate = index;
+			concatenate = min_->next;
 		}
 	}
-	//if(concatenate!=-1)    
-	    pre->next = lists[concatenate];
+	pre->next = concatenate;
 	return head;
     }
 };
