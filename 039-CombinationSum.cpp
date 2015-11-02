@@ -1,30 +1,31 @@
 class Solution {
-    set<vector<int> > result;
-    void dfs(vector<int> &candidates, int target, int begin, vector<int> &vec){
+    vector<vector<int> > result;
+    void combine(vector<int> &candidates, int target, int begin, vector<int> &vec){
         for(int i = begin; i<candidates.size(); i++){
-            if(target==candidates[i]){
+            if(i!=0 && candidates[i]==candidates[i-1])
+                continue;
+            if(candidates[i]==target){
                 vec.push_back(candidates[i]);
-                result.insert(vec);
+                result.push_back(vec);
                 vec.pop_back();
                 return;
             }
-            else if(target>candidates[i]){
+            else if(candidates[i]<target){
                 vec.push_back(candidates[i]);
-                dfs(candidates, target-candidates[i], i,vec);
+                combine(candidates, target-candidates[i], i, vec);
+                vec.pop_back();
             }
             else
                 return;
-            vec.pop_back();
         }
     }
 public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         if(candidates.size())
             sort(candidates.begin(), candidates.end());
-        result.clear();
+        result. clear();
         vector<int> vec;
-        dfs(candidates, target, 0, vec);
-        vector<vector<int> > ans(result.begin(), result.end());
-        return ans;
+        combine(candidates, target, 0, vec);
+        return result;
     }
 };
