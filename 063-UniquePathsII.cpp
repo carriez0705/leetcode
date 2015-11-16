@@ -2,27 +2,20 @@ class Solution {
 public:
     int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
         int m = obstacleGrid.size();
-        if(!m) return 0;
-        int n = obstacleGrid[0].size();
-        vector<vector<int> > way(m, vector<int>(n,0));
-        if(!obstacleGrid[0][0]) way[0][0] = 1;
-        for(int i =1; i<m; i++)
-            if(obstacleGrid[i][0])
-                way[i][0] = 0;
-            else
-                way[i][0] = way[i-1][0];
-        for(int j = 1; j<n; j++)
-            if(obstacleGrid[0][j])
-                way[0][j] = 0;
-            else
-                way[0][j] = way[0][j-1];
-        for(int i = 1; i<m; i++)
-            for(int  j = 1; j<n; j++){
-                if(obstacleGrid[i][j])
-                    way[i][j] = 0;
+        int n = m==0? 0: obstacleGrid[0].size();
+        if(!m || !n) return 0;
+        vector<int> ans(n, 0);
+        if(!obstacleGrid[0][0]) ans[0]=1;
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(obstacleGrid[i][j]==0){
+                    int left = j==0? 0 : ans[j-1];
+                    ans[j] += left;
+                }
                 else
-                    way[i][j] = way[i-1][j]+way[i][j-1];
+                    ans[j] = 0;
             }
-        return way[m-1][n-1];
+        }
+        return ans[n-1];
     }
 };
