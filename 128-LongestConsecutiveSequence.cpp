@@ -1,3 +1,33 @@
+//-1
+class Solution {
+    int countConsecutive(int num, unordered_set<int> &numset, bool increase){
+        int count = 0;
+        while(numset.find(num)!=numset.end()){
+            count++;
+            numset.erase(num);
+            if(increase)
+                num++;
+            else
+                num--;
+        }
+        return count;
+    }
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> numset;
+        for(int i = 0; i<nums.size(); i++)
+            numset.insert(nums[i]);
+        int maxlen = 0;
+        for(int i = 0; i<nums.size(); i++){
+            if(numset.find(nums[i])==numset.end())
+                continue;
+            numset.erase(nums[i]);
+            maxlen = max(maxlen, 1+countConsecutive(nums[i]-1, numset, false) + countConsecutive(nums[i]+1, numset, true));
+        }
+        return maxlen;
+    }
+};
+//-2
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
