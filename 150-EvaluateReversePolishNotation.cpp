@@ -1,50 +1,42 @@
 class Solution {
 public:
-    int toint(const string &s){
-        bool neg = false;
-        int m = 0;
-        int i = 0;
-        //negtive number
-        if(s[0]=='-'){
-            neg=true;
-            i = 1;
-        }
-        for(; i<s.size(); i++){
-            int a = s[i]-'0';
-            m = m*10+a;
-        }
-        return neg?(0-m):m;
-    }
     int evalRPN(vector<string>& tokens) {
-        map<string,int> mmap;
-        mmap["+"] = 1;
-        mmap["-"] = 2;
-        mmap["*"] = 3;
-        mmap["/"] = 4;
-        stack<int> st;
-        
+        if(tokens.size()==0) return 0;
+        stack<int> num;
+        set<char> ops;
+        ops.insert('+');
+        ops.insert('-');
+        ops.insert('*');
+        ops.insert('/');
         for(int i = 0; i<tokens.size(); i++){
-            string s = tokens[i];
-           
-            if(mmap.find(s)!=mmap.end()&&st.size()>1){
-                int sum = 0;
-                //oder of numbers
-                int b = st.top();
-                st.pop();
-                int a = st.top();
-                st.pop();
-                switch(mmap[s]){
-                    case 1: sum = a+b; break;
-                    case 2: sum = a-b; break;
-                    case 3: sum = a*b; break;
-                    case 4: sum = a/b; break;
+            if(tokens[i].size()==1 && ops.find(tokens[i][0])!=ops.end()){
+                if(num.empty()) return 0;
+                int second = num.top();
+                num.pop();
+                if(num.empty()) return tokens[i][0]=='-'? 0-second :second;
+                int first = num.top();
+                num.pop();
+                int res = first;
+                switch(tokens[i][0]){
+                    case '+':
+                        res += second;
+                        break;
+                    case '-':
+                        res -= second;
+                        break;
+                    case '*':
+                        res *= second;
+                        break;
+                    case '/':
+                        res = second==0? 0: res/second;
+                        break;
                 }
-                st.push(sum);
+                num.push(res);
             }
             else{
-                st.push(toint(s));
+                num.push(stoi(tokens[i]));
             }
         }
-        return st.top();
+        return num.empty() ? 0: num.top();
     }
 };
