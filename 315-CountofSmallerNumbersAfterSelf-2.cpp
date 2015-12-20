@@ -8,6 +8,7 @@ struct TNode{
 class Solution {
     int insert(TNode *root, TNode *node, int lcnt){
         if(root->val == node->val){
+            delete node;
             root->dup += 1;
             return lcnt + root->cnt;
         }
