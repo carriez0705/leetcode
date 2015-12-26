@@ -77,9 +77,9 @@ void partition3(vector<int> &vec, int p, int q){
 		int i = p;
 		int j = q;
 		while(i<=j){
-			while(i<j && vec[i]<=pivot)
+			while(i<=j && vec[i]<=pivot)
 				i++;
-			while(i<j && vec[j]>=pivot)
+			while(i<=j && vec[j]>=pivot)
 				j--;
 			if(i<=j){
 				swap(vec[i],vec[j]);
