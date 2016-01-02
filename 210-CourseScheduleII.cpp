@@ -1,30 +1,47 @@
-//enum color = {WHITE, GRAY, BLACK};
+class Graph{
+   int V, E;
+   vector<vector<int> > adj;
+   bool traverse(int node, vector<int> &mark, vector<int> &ans){
+       mark[node] = 1;
+       for(int i = 0; i<adj[node].size(); i++){
+           int nei= adj[node][i];
+           if(mark[nei]==1) return false;
+           if(!mark[nei]){
+               if(!traverse(nei, mark, ans))
+                    return false;
+           }
+       }
+       mark[node] = 2;
+       ans.push_back(node);
+       return true;
+   }
+public:
+    Graph(int v, int e=0):V(v), E(e), adj(vector<vector<int> >(v, vector<int>())){}
+    void addEdge(int n1, int n2){
+        adj[n2].push_back(n1);
+        E++;
+    }
+    vector<int> printCourse(){
+        vector<int> ans;
+        vector<int> mark(V, 0);
+        for(int i = 0; i<V; i++){
+            if(!mark[i]){
+                if(!traverse(i, mark, ans)){
+                    return vector<int>();
+                }
+            }
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
 class Solution {
 public:
-    bool dfs(int node, vector<vector<int> > &adj, vector<char> &color,vector<int> &result){
-        color[node] = 1;
-        for(int i = 0; i<adj[node].size();i++){
-            int ch = adj[node][i];
-            if(color[ch]==1) return false;
-            if(!color[ch])
-                if(!dfs(ch,adj,color,result)) return false;;
-        }
-        color[node] = 2;
-        result.push_back(node);
-        return true;
-    }
     vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
-        vector<vector<int> > adj(numCourses, vector<int>());
-        vector<char> color(numCourses,0);
-        vector<int> result;
-        for(int i = 0; i<prerequisites.size();i++){
-            adj[prerequisites[i].first].push_back(prerequisites[i].second);
-        }
-        bool f = true;
-        for(int i = 0; i<adj.size();i++){
-            if(!color[i])
-                if(!dfs(i,adj, color, result)) return vector<int>();
-        }
-        return result;
+        if(!numCourses) return vector<int>();
+        Graph gra(numCourses);
+        for(int i = 0; i<prerequisites.size(); i++)
+            gra.addEdge(prerequisites[i].first, prerequisites[i].second);
+        return gra.printCourse();
     }
 };
